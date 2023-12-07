@@ -1,0 +1,10 @@
+settings.json
+*.d
+*.o
+sr
+*.pcap
+*.log
+**/__pycache__/
+**/*.lock
+tests/project_base
+!.gitignore

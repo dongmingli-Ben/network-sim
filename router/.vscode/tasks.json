@@ -1,0 +1,341 @@
+{
+    "version": "2.0.0",
+    "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "dedicated",
+        "showReuseMessage": true
+    },
+    "tasks": [
+        {
+            "label": "Create PA2a terminals",
+            "dependsOn": [
+                "MininetPA2a",
+                "SR",
+            ],
+            // Mark as the default build task so cmd/ctrl+shift+b will create them
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+        },
+        {
+            "label": "Create PA2b terminals",
+            "dependsOn": [
+                "Mininet",
+                "SRs",
+            ],
+            // Mark as the default build task so cmd/ctrl+shift+b will create them
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+        },
+        {
+            // The name that shows up in terminal tab
+            "label": "Clean",
+            // The task will launch a shell
+            "type": "shell",
+            "command": "/project-base/killall.sh; sudo mn -c; exit 0",
+            // Set the shell type
+            "options": {
+                "shell": {
+                    "executable": "bash",
+                    "args": [
+                        "-c"
+                    ]
+                }
+            },
+            // Mark as a background task to avoid the spinner animation on the terminal tab
+            "isBackground": false,
+            "problemMatcher": [],
+        },
+        {
+            // The name that shows up in terminal tab
+            "label": "POX",
+            "dependsOn": [
+                "Clean"
+            ],
+            // The task will launch a shell
+            "type": "shell",
+            "command": "cd /project-base && ./run_pox.sh",
+            // Set the shell type
+            "options": {
+                "shell": {
+                    "executable": "bash",
+                    "args": [
+                        "-c"
+                    ]
+                }
+            },
+            // Mark as a background task to avoid the spinner animation on the terminal tab
+            "isBackground": true,
+            "problemMatcher": {
+                "pattern": {
+                    "regexp": ""
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": ".",
+                    "endsPattern": "^.*Listening on 0.0.0.0:6633",
+                }
+            },
+        },
+        {
+            // The name that shows up in terminal tab
+            "label": "POXPA2a",
+            "dependsOn": [
+                "Clean"
+            ],
+            // The task will launch a shell
+            "type": "shell",
+            "command": "cd /project-base && ./run_pox_pa2a.sh",
+            // Set the shell type
+            "options": {
+                "shell": {
+                    "executable": "bash",
+                    "args": [
+                        "-c"
+                    ]
+                }
+            },
+            // Mark as a background task to avoid the spinner animation on the terminal tab
+            "isBackground": true,
+            "problemMatcher": {
+                "pattern": {
+                    "regexp": ""
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": ".",
+                    "endsPattern": "^.*Listening on 0.0.0.0:6633",
+                }
+            },
+        },
+        {
+            "label": "MininetPA2a",
+            "type": "shell",
+            "dependsOn": [
+                "POXPA2a"
+            ],
+            "command": "cd /project-base && ./run_mininet_pa2a.sh",
+            "options": {
+                "shell": {
+                    "executable": "bash",
+                    "args": [
+                        "-c"
+                    ]
+                }
+            },
+            "isBackground": true,
+            "problemMatcher": {
+                "pattern": {
+                    "regexp": ""
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": ".",
+                    "endsPattern": "^\\*\\*\\* Starting CLI:",
+                }
+            },
+        },
+        {
+            "label": "Mininet",
+            "type": "shell",
+            "dependsOn": [
+                "POX"
+            ],
+            "command": "cd /project-base && ./run_mininet.sh",
+            "options": {
+                "shell": {
+                    "executable": "bash",
+                    "args": [
+                        "-c"
+                    ]
+                }
+            },
+            "isBackground": true,
+            "problemMatcher": {
+                "pattern": {
+                    "regexp": ""
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": ".",
+                    "endsPattern": "^\\*\\*\\* Starting CLI:",
+                }
+            },
+        },
+        {
+            "label": "SolutionBuild",
+            "type": "shell",
+            "command": "make",
+            "options": {
+                "shell": {
+                    "executable": "bash",
+                    "args": [
+                        "-c"
+                    ]
+                }
+            },
+            "problemMatcher": [],
+        },
+        {
+            "label": "SR",
+            "dependsOn": [
+                "SolutionBuild",
+            ],
+            "type": "shell",
+            "command": "./sr",
+            "args": [
+                "-l", "test.pcap",
+                "-r", "rtable",
+            ],
+            "options": {
+                "shell": {
+                    "executable": "bash",
+                    "args": [
+                        "-c"
+                    ]
+                }
+            },
+            "isBackground": false,
+            "problemMatcher": [],
+            "presentation": {
+                "group": "outputs"
+            }
+        },
+        {
+            "label": "SRs",
+            "dependsOn": [
+                "SR1",
+                "SR2",
+                "SR3",
+                "SR4",
+            ],
+        },
+        {
+            "label": "SR1",
+            "dependsOn": [
+                "SolutionBuild",
+            ],
+            "type": "shell",
+            "command": "./sr",
+            "args": [
+                "-l", "test1.pcap",
+                "-v", "sw1",
+                "-r", "rtable1",
+            ],
+            "options": {
+                "shell": {
+                    "executable": "bash",
+                    "args": [
+                        "-c"
+                    ]
+                }
+            },
+            "isBackground": false,
+            "problemMatcher": [],
+            "presentation": {
+                "group": "outputs"
+            }
+        },
+        {
+            "label": "SR2",
+            "dependsOn": [
+                "SolutionBuild",
+            ],
+            "type": "shell",
+            "command": "./sr",
+            "args": [
+                "-l", "test2.pcap",
+                "-v", "sw2",
+                "-r", "rtable2",
+            ],
+            "options": {
+                "shell": {
+                    "executable": "bash",
+                    "args": [
+                        "-c"
+                    ]
+                }
+            },
+            "isBackground": false,
+            "problemMatcher": [],
+            "presentation": {
+                "group": "outputs"
+            }
+        },
+        {
+            "label": "SR3",
+            "dependsOn": [
+                "SolutionBuild",
+            ],
+            "type": "shell",
+            "command": "./sr",
+            "args": [
+                "-l", "test3.pcap",
+                "-v", "sw3",
+                "-r", "rtable3",
+            ],
+            "options": {
+                "shell": {
+                    "executable": "bash",
+                    "args": [
+                        "-c"
+                    ]
+                }
+            },
+            "isBackground": false,
+            "problemMatcher": [],
+            "presentation": {
+                "group": "outputs"
+            }
+        },
+        {
+            "label": "SR4",
+            "dependsOn": [
+                "SolutionBuild",
+            ],
+            "type": "shell",
+            "command": "./sr",
+            "args": [
+                "-l", "test4.pcap",
+                "-v", "sw4",
+                "-r", "rtable4",
+            ],
+            "options": {
+                "shell": {
+                    "executable": "bash",
+                    "args": [
+                        "-c"
+                    ]
+                }
+            },
+            "isBackground": false,
+            "problemMatcher": [],
+            "presentation": {
+                "group": "outputs"
+            }
+        },
+        {
+            "type": "cppbuild",
+            "label": "C/C++: debug project",   // need to match the preLaunchTask in launch.json
+            "command": "make",   // command and arguments to compile executable
+            "args": [
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"   // working directory for compilation
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Generate debug file"
+        }
+    ]
+}

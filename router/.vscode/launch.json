@@ -1,0 +1,20 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "C: Launch",    // name shown in the debug toolbar [RUN AND DEBUG] option
+            "type": "cppdbg",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",   // working directory for debugging
+            "program": "${workspaceFolder}/sr",   // the executable to be debugged
+            "preLaunchTask": "C/C++: debug project",   // compile the executable before launching debug session with gdb
+                                                        // The name is arbitrary as long as it matches the name in tasks.json
+            "externalConsole": false,
+            "args": [
+            ]   // arguments to pass to the executable when launching debug session
+        },
+    ]
+}
